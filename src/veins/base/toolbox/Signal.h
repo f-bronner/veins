@@ -202,25 +202,37 @@ public:
     /** @brief Saves the arrival sender module information form message. */
     void setReceptionSenderInfo(const cMessage* const pMsg);
 
+    /** @brief Attenuates (multiplies) the spectral power density at a given frequency index by a given factor. */
     void addAttenuation(uint16_t freqIndex, double factor);
+    /** @brief Attenuates (multiplies) all spectral power densities by a given factor. */
     void addUniformAttenuation(double factor);
 
 private:
+    /** @brief Ensures that the relative interval includes the given frequency index. */
     void includeAbsoluteIndex(size_t freqIndex);
 
+    /** @brief The spectrum defines the frequency for each frequency index (and the maximum number of different frequencies/spectral power densities). */
     Spectrum spectrum;
 
+    /** @brief An array containing the spectral power densities (usually of size equal to the number of frequencies within the spectrum). */
     double* values;
 
+    /** @brief The total number of spectral power density values regardless if defined or not (usually equal to the number of frequencies within the spectrum). */
     size_t numAbsoluteValues;
+    /** @brief The size of the interval containing all spectral power densities for which a concrete value is defined. */
     size_t numRelativeValues;
+    /** @brief The size of a user defined interval that is used to evaluate SINRs. */
     size_t numDataValues;
 
+    /** @brief A frequency index that denotes the beginning of the interval for which concrete spectral power densities are defined. */
     size_t relativeOffset;
+    /** @brief A frequency index that denotes the beginning of a user-defined interval that is used to evaluate SINRs. */
     size_t dataOffset;
 
+    /** @brief A user-defined frequency index used for the methods that check whether the signal is below or above a given threshold at this frequency (thresholding mechanism). */
     size_t centerFrequencyIndex;
 
+    /** @brief Indicates whether the timing (start, duration) is reliable or not. In case of finding an overlap among two signals, the timing might not be required and thus is not computed. */
     bool timingUsed;
     /** @brief The start of the signal transmission at the sender module.*/
     simtime_t sendingStart;
@@ -229,9 +241,13 @@ private:
     /** @brief The propagation delay of the transmission. */
     simtime_t propagationDelay;
 
+    /** @brief A list of analogue models (usually responsible for attenuation effects) that influence the signal (thresholding mechanism). */
     AnalogueModelList* analogueModelList;
+    /** @brief The number of analogue models (from the given list) that are already applied on the signal (thresholding mechanism). */
     uint16_t numAnalogueModelsApplied;
+    /** @brief The position of the sender (required as a parameter by some analogue models). */
     Coord senderPos;
+    /** @brief The position of the receiver (required as a parameter by some analogue models). */
     Coord receiverPos;
 
     /** @brief Stores the function which describes the bitrate of the signal*/
